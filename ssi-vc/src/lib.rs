@@ -768,7 +768,7 @@ impl Credential {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to split JWS: {}", err)),
+                    VerificationResult::error(&format!("Unable to split JWS: {err}")),
                 );
             }
         };
@@ -782,7 +782,7 @@ impl Credential {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to decode JWS: {}", err)),
+                    VerificationResult::error(&format!("Unable to decode JWS: {err}")),
                 );
             }
         };
@@ -791,7 +791,7 @@ impl Credential {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to decode JWS claims: {}", err)),
+                    VerificationResult::error(&format!("Unable to decode JWS claims: {err}")),
                 );
             }
         };
@@ -801,8 +801,7 @@ impl Credential {
                 return (
                     None,
                     VerificationResult::error(&format!(
-                        "Unable to convert JWT claims to VC: {}",
-                        err
+                        "Unable to convert JWT claims to VC: {err}"
                     )),
                 );
             }
@@ -810,7 +809,7 @@ impl Credential {
         if let Err(err) = vc.validate_unsigned() {
             return (
                 None,
-                VerificationResult::error(&format!("Invalid VC: {}", err)),
+                VerificationResult::error(&format!("Invalid VC: {err}")),
             );
         }
         // TODO: error if any unconvertable claims
@@ -823,7 +822,7 @@ impl Credential {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to filter proofs: {}", err)),
+                    VerificationResult::error(&format!("Unable to filter proofs: {err}")),
                 );
             }
         };
@@ -838,7 +837,7 @@ impl Credential {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to resolve key for JWS: {}", err)),
+                    VerificationResult::error(&format!("Unable to resolve key for JWS: {err}")),
                 );
             }
         };
@@ -852,7 +851,7 @@ impl Credential {
                 }
                 Err(err) => results
                     .errors
-                    .push(format!("Unable to verify signature: {}", err)),
+                    .push(format!("Unable to verify signature: {err}")),
             }
             return (Some(vc), results);
         }
@@ -995,7 +994,7 @@ impl Credential {
         let (proofs, _) = match self.filter_proofs(options, None, resolver).await {
             Ok(proofs) => proofs,
             Err(err) => {
-                return VerificationResult::error(&format!("Unable to filter proofs: {}", err));
+                return VerificationResult::error(&format!("Unable to filter proofs: {err}"));
             }
         };
         if proofs.is_empty() {
@@ -1070,18 +1069,14 @@ impl Credential {
             Ok(status) => status,
             Err(e) => {
                 return VerificationResult::error(&format!(
-                    "Unable to convert credentialStatus: {}",
-                    e
+                    "Unable to convert credentialStatus: {e}"
                 ))
             }
         };
         let checkable_status: CheckableStatus = match serde_json::from_value(status_value) {
             Ok(checkable_status) => checkable_status,
             Err(e) => {
-                return VerificationResult::error(&format!(
-                    "Unable to parse credentialStatus: {}",
-                    e
-                ))
+                return VerificationResult::error(&format!("Unable to parse credentialStatus: {e}"))
             }
         };
         let mut result = checkable_status.check(self, resolver, context_loader).await;
@@ -1322,7 +1317,7 @@ impl Presentation {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to split JWS: {}", err)),
+                    VerificationResult::error(&format!("Unable to split JWS: {err}")),
                 );
             }
         };
@@ -1336,7 +1331,7 @@ impl Presentation {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to decode JWS: {}", err)),
+                    VerificationResult::error(&format!("Unable to decode JWS: {err}")),
                 );
             }
         };
@@ -1345,7 +1340,7 @@ impl Presentation {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to decode JWS claims: {}", err)),
+                    VerificationResult::error(&format!("Unable to decode JWS claims: {err}")),
                 );
             }
         };
@@ -1355,8 +1350,7 @@ impl Presentation {
                 return (
                     None,
                     VerificationResult::error(&format!(
-                        "Unable to convert JWT claims to VP: {}",
-                        err
+                        "Unable to convert JWT claims to VP: {err}"
                     )),
                 );
             }
@@ -1364,7 +1358,7 @@ impl Presentation {
         if let Err(err) = vp.validate_unsigned() {
             return (
                 None,
-                VerificationResult::error(&format!("Invalid VP: {}", err)),
+                VerificationResult::error(&format!("Invalid VP: {err}")),
             );
         }
         let mut results = VerificationResult::new();
@@ -1378,7 +1372,7 @@ impl Presentation {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to filter proofs: {}", err)),
+                    VerificationResult::error(&format!("Unable to filter proofs: {err}")),
                 );
             }
         };
@@ -1393,7 +1387,7 @@ impl Presentation {
             Err(err) => {
                 return (
                     None,
-                    VerificationResult::error(&format!("Unable to resolve key for JWS: {}", err)),
+                    VerificationResult::error(&format!("Unable to resolve key for JWS: {err}")),
                 );
             }
         };
@@ -1406,7 +1400,7 @@ impl Presentation {
                 }
                 Err(err) => results
                     .errors
-                    .push(format!("Unable to filter proofs: {}", err)),
+                    .push(format!("Unable to filter proofs: {err}")),
             }
             return (Some(vp), results);
         }
@@ -1583,7 +1577,7 @@ impl Presentation {
         let (proofs, _) = match self.filter_proofs(options, None, resolver).await {
             Ok(proofs) => proofs,
             Err(err) => {
-                return VerificationResult::error(&format!("Unable to filter proofs: {}", err));
+                return VerificationResult::error(&format!("Unable to filter proofs: {err}"));
             }
         };
         if proofs.is_empty() {
@@ -3010,7 +3004,6 @@ _:c14n0 <https://w3id.org/security#verificationMethod> <https://example.org/foo/
             .await
             .unwrap();
         let vp_jwt_verify_options = LinkedDataProofOptions {
-            created: None,
             checks: None,
             proof_purpose: None,
             ..Default::default()
@@ -3578,6 +3571,7 @@ _:c14n0 <https://w3id.org/security#verificationMethod> <https://example.org/foo/
 
     #[async_std::test]
     async fn verify_typed_data() {
+        use sha3::Digest;
         use ssi_ldp::eip712::TypedData;
         let proof: Proof = serde_json::from_value(json!({
           "verificationMethod": "did:example:aaaabbbb#issuerKey-1",
@@ -3780,13 +3774,14 @@ _:c14n0 <https://w3id.org/security#verificationMethod> <https://example.org/foo/
             ssi_jwk::Params::EC(ec) => ec,
             _ => unreachable!(),
         };
-        use k256::ecdsa::signature::Signer;
         let secret_key = k256::SecretKey::try_from(ec_params).unwrap();
         let signing_key = k256::ecdsa::SigningKey::from(secret_key);
-        let sig: k256::ecdsa::recoverable::Signature = signing_key.try_sign(&bytes).unwrap();
-        let sig_bytes = &mut sig.as_ref().to_vec();
+        let (sig, rec_id) = signing_key
+            .sign_digest_recoverable(sha3::Keccak256::new_with_prefix(bytes))
+            .unwrap();
+        let sig_bytes = &mut sig.to_vec();
         // Recovery ID starts at 27 instead of 0.
-        sig_bytes[64] += 27;
+        sig_bytes.push(rec_id.to_byte() + 27);
         let sig_hex = ssi_crypto::hashes::keccak::bytes_to_lowerhex(sig_bytes);
         let mut proof = proof.clone();
         proof.proof_value = Some(sig_hex.clone());
