@@ -667,6 +667,7 @@ impl Credential {
             checks,
             eip712_domain,
             type_,
+            cryptosuite,
         } = options;
         if checks.is_some() {
             return Err(Error::UnencodableOptionClaim("checks".to_string()));
@@ -679,6 +680,9 @@ impl Credential {
         }
         if type_.is_some() {
             return Err(Error::UnencodableOptionClaim("type".to_string()));
+        }
+        if cryptosuite.is_some() {
+            return Err(Error::UnencodableOptionClaim("cryptosuite".to_string()));
         }
         match proof_purpose {
             None => (),
