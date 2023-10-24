@@ -681,6 +681,9 @@ impl Credential {
         if type_.is_some() {
             return Err(Error::UnencodableOptionClaim("type".to_string()));
         }
+        if cryptosuite.is_some() {
+            return Err(Error::UnencodableOptionClaim("cryptosuite".to_string()));
+        }
         match proof_purpose {
             None => (),
             Some(ProofPurpose::AssertionMethod) => (),
